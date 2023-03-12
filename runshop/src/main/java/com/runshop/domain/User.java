@@ -11,7 +11,7 @@ public class User {
 
     private String surname;
 
-    private Timestamp birthDate;
+    private Timestamp dateBirth;
 
     private Double weight;
 
@@ -20,15 +20,14 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String surname, Timestamp birthDate, Double weight, Double height) {
+    public User(Long id, String name, String surname, Timestamp dateBirth, Double weight, Double height) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.birthDate = birthDate;
+        this.dateBirth = dateBirth;
         this.weight = weight;
         this.height = height;
     }
-
 
     public Long getId() {
         return id;
@@ -54,20 +53,12 @@ public class User {
         this.surname = surname;
     }
 
-    public Timestamp getBirthDate() {
-        return birthDate;
+    public Timestamp getDateBirth() {
+        return dateBirth;
     }
 
-    public void setBirthDate(Timestamp birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
+    public void setDateBirth(Timestamp dateBirth) {
+        this.dateBirth = dateBirth;
     }
 
     public Double getWeight() {
@@ -78,8 +69,15 @@ public class User {
         this.weight = weight;
     }
 
+    public Double getHeight() {
+        return height;
+    }
 
-//    public boolean equals(Object o) {
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    //    public boolean equals(Object o) {
 //        if (this == o) return true;
 //        if (!(o instanceof User user)) return false;
 //        return id.equals(user.id) && name.equals(user.name) && surname.equals(user.surname) && birthDate.equals(user.birthDate) && weight.equals(user.weight) && height.equals(user.height);
@@ -90,7 +88,7 @@ public class User {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (dateBirth != null ? dateBirth.hashCode() : 0);
         result = 31 * result + (weight != null ? weight.hashCode() : 0);
         result = 31 * result + (height != null ? height.hashCode() : 0);
         return result;
@@ -103,7 +101,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", birthDate=" + birthDate +
+                ", birthDate=" + dateBirth +
                 ", weight=" + weight +
                 ", height=" + height +
                 '}';
