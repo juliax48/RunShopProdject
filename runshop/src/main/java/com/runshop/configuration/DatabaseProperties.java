@@ -1,6 +1,12 @@
 package com.runshop.configuration;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -14,7 +20,6 @@ import org.springframework.stereotype.Component;
 @ToString
 @EqualsAndHashCode
 public class DatabaseProperties {
-
     @Value("${POSTRGES_DRIVER_NAME}")
     private String driverName;
 
@@ -39,3 +44,7 @@ public class DatabaseProperties {
     @Value("${POOL_SIZE}")
     private Integer poolSize;
 }
+
+
+
+

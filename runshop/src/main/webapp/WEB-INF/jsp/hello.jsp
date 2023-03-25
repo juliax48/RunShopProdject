@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Runstore
+  User: Noirix
   Date: 09.02.2023
   Time: 17:42
   To change this template use File | Settings | File Templates.
@@ -12,30 +12,35 @@
     <title>Hello</title>
 </head>
 <body>
-${userName}
+${itemName}
 
 <div>
-    <h1>System User</h1>
+    <h1>System Items</h1>
 </div>
 <div>
     <table>
         <tr>
-            <td>User Id</td>
-            <td>User Name</td>
-            <td>User Surname</td>
-            <td>Birth date</td>
-            <td>Height</td>
-            <td>Weight</td>
-
+            <td>Id</td>
+            <td>Name</td>
+            <td>Brand</td>
+            <td>Size</td>
+            <td>Color</td>
+            <td>Price</td>
+            <td>Edit</td>
+            <td>Delete</td>
         </tr>
-        <c:forEach var="user" items="${users}">
+        <c:forEach var="item" items="${item}">
             <tr>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.surname}</td>
-                <td>${user.birthDate}</td>
-                <td>${user.height}</td>
-                <td>${user.weight}</td>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.brand}</td>
+                <td>${item.size}</td>
+                <td>${item.color}</td>
+                <td>${item.price}</td>
+
+                <td><button>Edit</button></td>
+                <td><button>Delete</button></td>
+
             </tr>
         </c:forEach>
     </table>

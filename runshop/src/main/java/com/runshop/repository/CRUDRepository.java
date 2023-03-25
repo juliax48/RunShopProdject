@@ -1,13 +1,14 @@
 package com.runshop.repository;
 
-import java.sql.SQLException;
+import com.runshop.repository.implementUser.EntityNotFoundException;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface CRUDRepository <K, T>  {
-    Optional<T> findOne(T object) throws SQLException;
+    Optional<T> findOne(T id);
 
-    T findById (K id) throws EntityNotFoundException;
+    T findById(K id) throws EntityNotFoundException;
 
     List<T> findAll();
 
@@ -15,7 +16,7 @@ public interface CRUDRepository <K, T>  {
 
     T update(T object);
 
-    T delete(K id) throws EntityNotFoundException;
+    void delete(K id);
 
 }
 
