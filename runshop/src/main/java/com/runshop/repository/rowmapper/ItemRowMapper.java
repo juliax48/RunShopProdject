@@ -28,7 +28,7 @@ public class ItemRowMapper implements RowMapper<Item> {
                     .brand(resultSet.getString(BRAND))
                     .price(resultSet.getDouble(PRICE))
                     .color(resultSet.getString(COLOR))
-                    .size(resultSet.getString(SIZE))
+                    .size(resultSet.getDouble(SIZE))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);

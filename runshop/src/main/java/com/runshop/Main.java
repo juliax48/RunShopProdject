@@ -11,12 +11,19 @@ public class Main {
     public static void main(String[] args) throws EntityNotFoundException {
         ItemRepositoryImpl itemRepository = new ItemRepositoryImpl(new JdbcTemplate());
 
-
-        System.out.println("-------------------------------------------------------------------------");
-        List<Item> itemList = itemRepository.findAll();
-        for (Item item : itemList) {
+        List<Item> sizeList = itemRepository.searchItemBySize(42D);
+        for (Item item : sizeList) {
             System.out.println(item);
         }
+        List<Item> brandList = itemRepository.searchItemByBrand("NB");
+        for (Item item : brandList) {
+            System.out.println(item);
+        }
+    }
+}
+//        itemRepository.delete(8L);
+
+
 
 //        List<Item> itemList = itemRepository.findAll();
 //        for (Item item : itemList) {
@@ -35,6 +42,3 @@ public class Main {
 
 
 
-
-    }
-}

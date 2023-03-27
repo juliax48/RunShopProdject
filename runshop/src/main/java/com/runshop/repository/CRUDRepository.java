@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CRUDRepository <K, T>  {
-    Optional<T> findOne(T id);
+    Optional<T> findOne(Long id);
 
     T findById(K id) throws EntityNotFoundException;
 
@@ -16,7 +16,7 @@ public interface CRUDRepository <K, T>  {
 
     T update(T object);
 
-    void delete(K id);
+    T delete(K id);
 
 }
 

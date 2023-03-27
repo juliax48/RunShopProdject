@@ -12,7 +12,6 @@
     <title>Hello</title>
 </head>
 <body>
-${itemName}
 
 <div>
     <h1>System Items</h1>
@@ -29,7 +28,7 @@ ${itemName}
             <td>Edit</td>
             <td>Delete</td>
         </tr>
-        <c:forEach var="item" items="${item}">
+        <c:forEach var="item" items="${items}">
             <tr>
                 <td>${item.id}</td>
                 <td>${item.name}</td>

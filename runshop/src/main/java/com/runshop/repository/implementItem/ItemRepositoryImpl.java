@@ -38,7 +38,6 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private void registerDriver() {
         try {
-            //загрузка драйвера в classLoader (это чтобы с поднятием контекста спринга не конфликтовало?)
             Class.forName(POSTRGES_DRIVER_NAME);
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
@@ -62,7 +61,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             item.setId(resultSet.getLong(ID));
             item.setName(resultSet.getString(NAME));
             item.setBrand(resultSet.getString(BRAND));
-            item.setSize(resultSet.getString(SIZE));
+            item.setSize(resultSet.getDouble(SIZE));
             item.setColor(resultSet.getString(COLOR));
             item.setPrice(resultSet.getDouble(PRICE));
         } catch (SQLException e) {
@@ -72,45 +71,41 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Optional<Item> findOne(Item item) { // любой объект как Optional
-        return Optional.of(item);
+    public Optional<Item> findOne(Long id) {
+        return Optional.of(findById(id));
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////
     @Override
     public Item findById(Long id) {
-        Item item = null;  // вне блока try
+        Item item = null;
 
         registerDriver();
         try {
+            String sql = "select * from item where id=?";
             PreparedStatement preparedStatement =
-                    getConnection().prepareStatement("select * from item where id=?");
-
+                    getConnection().prepareStatement(sql);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 item = parserResultSet(resultSet);
             }
-        } catch (SQLException e) { //создать класс Entity
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return item;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public List findAll() {
         List<Item> items = new ArrayList<>();
 
-        //Объект запрос который сожержит запрос
         registerDriver();
         try {
-
             Statement statement = getConnection().createStatement();
-            String SQL = "select * from item order by id asc"; //SQL запрос
+            String sql = "select * from item order by id asc"; //SQL запрос
             //объект в которм лежат строки
-            ResultSet resultSet = statement.executeQuery(SQL);
+            ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
                 items.add(parserResultSet(resultSet));
@@ -121,17 +116,16 @@ public class ItemRepositoryImpl implements ItemRepository {
         return items;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public Item create(Item item) {
         registerDriver();
         try {
-            PreparedStatement preparedStatement =
-                    getConnection().prepareStatement("insert into item(name, brand, size,color, price)" +
-                            " VALUES (?,?,?,?,?)");
+            String sql = "insert into item(name, brand, size,color, price)";
+                    PreparedStatement preparedStatement =
+                    getConnection().prepareStatement( sql + " VALUES (?,?,?,?,?)");
             preparedStatement.setString(1, item.getName());
             preparedStatement.setString(2, item.getBrand());
-            preparedStatement.setString(3, item.getSize());
+            preparedStatement.setDouble(3, item.getSize());
             preparedStatement.setString(4, item.getColor());
             preparedStatement.setDouble(5, item.getPrice());
 
@@ -141,24 +135,16 @@ public class ItemRepositoryImpl implements ItemRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        //запрос на получение послежней добавленной ID
-        //присвоить объект 1) genereted ID 2) siq образение к ней 3) Света запрос в БД
-        //
-
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-
     public Item update(Item item) {
-
         try {
-            PreparedStatement preparedStatement =
-                    getConnection().prepareStatement("update item set name=?, brand=?, size=?, color=?, price=? where id =?");
+            String SQL = "update item set name=?, brand=?, size=?, color=?, price=? where id =?";
+            PreparedStatement preparedStatement = getConnection().prepareStatement(SQL);
 
             preparedStatement.setString(1, item.getName());
             preparedStatement.setString(2, item.getBrand());
-            preparedStatement.setString(3, item.getSize());
+            preparedStatement.setDouble(3, item.getSize());
             preparedStatement.setString(4, item.getColor());
             preparedStatement.setDouble(5, item.getPrice());
             preparedStatement.setLong(6, item.getId());
@@ -171,13 +157,13 @@ public class ItemRepositoryImpl implements ItemRepository {
         return item;
     }
 
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void delete(Long id) {
+    public Item delete(Long id) {
+        Item item = findById(id);
         try {
+            String SQL = "delete from item where id=?";
             PreparedStatement preparedStatement =
-                    getConnection().prepareStatement("delete from item where id=?");
+                    getConnection().prepareStatement(SQL);
 
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -185,22 +171,53 @@ public class ItemRepositoryImpl implements ItemRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return item;
     }
 
     @Override
-    public List<Item> searchItemByBrand(String query, String brand) {
-        return null;
+    public List<Item> searchItemByBrand(String brand) {
+        List<Item> listBrand = new ArrayList<>();
+        registerDriver();
+
+        try {
+            Connection connection = getConnection();
+            String sql = "select * from item where brand = ? order by id asc ";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, brand);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                listBrand.add(parserResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL issues");
+        }
+        return listBrand;
     }
 
     @Override
-    public List<Item> searchItemBySize(String query, String size) {
-        return null;
+    public List<Item> searchItemBySize(Double size) {
+        List<Item> listSize = new ArrayList<>();
+
+        registerDriver();
+        try {
+            Connection connection = getConnection();
+            String SQL = "select * from item where size = ? order by id asc ";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setDouble(1, size);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                listSize.add(parserResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL issues");
+        }
+        return listSize;
     }
+
 }
-
-
-//данные для подключения
-//    private static String URL =
-//            "jdbc:postgresql://localhost:5432/postgres?useUnicode=true&useJDBCCompliantTimezoneShift=true&Peugeot RifteruseLegacyDatetimeCode=false&serverTimezone=UTC";
-//    private static String USERNAME = "postgres";
-//    private static String PASSWORD = "postgres";

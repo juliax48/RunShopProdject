@@ -1,8 +1,8 @@
 package com.runshop.service.serviceItem;
 
 import com.runshop.entity.Item;
-import com.runshop.entity.User;
 import com.runshop.repository.implementItem.ItemRepository;
+import com.runshop.repository.implementUser.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,41 +14,47 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     @Override
-    public Optional<Item> findOne(Item item) {
-        return Optional.empty();
+    public Optional<Item> findOne(Long id) {
+        return itemRepository.findOne(id);
     }
 
     @Override
     public Item findById(Long id) {
-        return null;
+        try {
+            return itemRepository.findById(id);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List findAll() {
-        return null;
+        return itemRepository.findAll();
     }
 
     @Override
     public Item create(Item item) {
-        return null;
+        return itemRepository.create(item);
     }
 
     @Override
     public Item update(Item item) {
-        return null;
+        return itemRepository.update(item);
     }
 
     @Override
-    public void delete(Long id) {
+    public Item delete(Long id) {
+        return itemRepository.delete(id);
     }
 
     @Override
-    public List<Item> searchItemByBrand(String query, String brand) {
-        return null;
+    public List<Item> searchItemByBrand(String brand) {
+        return itemRepository.searchItemByBrand(brand);
     }
+
     @Override
-    public List<Item> searchItemBySize(String query, String size) {
-        return null;
+    public List<Item> searchItemBySize(Double size) {
+        return itemRepository.searchItemBySize(size);
     }
 
 }

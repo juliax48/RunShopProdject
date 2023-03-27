@@ -15,7 +15,7 @@ public class Item {
     private Long id;
     private String name;
     private String brand;
-    private String size;
+    private Double size;
     private String color;
     private Double price;
     private Timestamp created;

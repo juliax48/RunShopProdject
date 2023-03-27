@@ -1,6 +1,5 @@
 package com.runshop.repository.implementUser;
 
-
 import com.runshop.entity.User;
 
 import java.sql.*;
@@ -67,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public Optional<User> findOne(User object) {
+    public Optional<User> findOne(Long id) {
         return Optional.empty();
     }
 
@@ -124,9 +123,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public User delete(Long id) {
+        return null;
     }
+
 
     ///////////////////////////////////////////////////////////////////////////////    @Override
 //    public User create(User user) {
@@ -241,25 +241,10 @@ public class UserRepositoryImpl implements UserRepository {
 //    }
 
     @Override
-    public List<User> searchUserByWeight(Double weight) {
-        return null;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////
-    @Override
     public List<User> searchUserByHeight(Double height) {
         return null;
     }
 
-    @Override
-    public List<User> getAverageHeight(Double height) {
-        return null;
-    }
-
-    @Override
-    public List<User> getAverageWeight(Double weight) {
-        return null;
-    }
 }
 
 

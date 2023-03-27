@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ItemRepository extends CRUDRepository<Long, Item> {
 
-    List<Item> searchItemByBrand (String query, String brand);
+    List<Item> searchItemByBrand (String brand);
 
-    List<Item> searchItemBySize(String query, String size);
+    List<Item> searchItemBySize (Double size);
 
 }
