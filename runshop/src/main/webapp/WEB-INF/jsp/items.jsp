@@ -9,12 +9,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Hello</title>
+    <title>Items</title>
 </head>
 <body>
 
 <div>
-    <h1>System Items</h1>
+    <h1>Items</h1>
 </div>
 <div>
     <table>

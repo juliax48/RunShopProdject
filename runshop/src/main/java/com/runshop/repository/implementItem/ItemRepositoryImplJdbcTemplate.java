@@ -4,21 +4,18 @@ import com.runshop.entity.Item;
 import com.runshop.repository.rowmapper.ItemRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.apache.log4j.Logger;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-
 
 @Repository
 @RequiredArgsConstructor
 @Primary
 public class ItemRepositoryImplJdbcTemplate implements ItemRepository {
-    private static final Logger logger = Logger.getLogger(String.valueOf(ItemRepositoryImplJdbcTemplate.class));
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -32,7 +29,7 @@ public class ItemRepositoryImplJdbcTemplate implements ItemRepository {
 
     @Override
     public Item create(Item item) {
-        final String sql = "insert into item(name, brand, size, color,price)" +
+        final String sql = "insert into item(name, brand, size, color, price)" +
                 " VALUES (?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 item.getName(),
@@ -40,7 +37,7 @@ public class ItemRepositoryImplJdbcTemplate implements ItemRepository {
                 item.getSize(),
                 item.getColor(),
                 item.getPrice());
-        final String sqlLastElem = "select id from item order by id desk limit 1";
+        final String sqlLastElem = "select id from item order by id limit 1";
         jdbcTemplate.queryForObject(sqlLastElem, Long.class);
         return item;
     }
@@ -53,15 +50,16 @@ public class ItemRepositoryImplJdbcTemplate implements ItemRepository {
                 item.getBrand(),
                 item.getSize(),
                 item.getColor(),
-                item.getPrice());
+                item.getPrice(),
+                item.getId());
         return findById(item.getId());
     }
 
     @Override
     public Item delete(Long id) {
         Item item = findById(id);
-        final String sql = "delete from item where id = :id";
-        jdbcTemplate.update(sql, itemRowMapper);
+        final String sql = "delete from item where id = " + id;
+        jdbcTemplate.update(sql);
         return item;
     }
 
@@ -76,24 +74,23 @@ public class ItemRepositoryImplJdbcTemplate implements ItemRepository {
         try {
             return jdbcTemplate.queryForObject(sql, itemRowMapper);
         } catch (EmptyResultDataAccessException e) {
-            logger.error("Item not found with id " + id);
+            System.out.println(("Item not found with id " + id)); //???
             throw new RuntimeException("Error!");
         }
     }
 
     @Override
-    public List<Item> searchItemByBrand(String brand) {
+    public List<Item> searchItemsByBrand(String brand) {
         String sql = "select * from item where brand = ?";
-        return jdbcTemplate.query(sql, itemRowMapper);
+        return jdbcTemplate.query(sql, itemRowMapper, brand);
     }
 
     @Override
-    public List<Item> searchItemBySize(Double size) {
-        String sql = "select * from item where size = ? order by id asc ";
-        return jdbcTemplate.query(sql, itemRowMapper);
+    public List<Item> searchItemsBySize(Double size) {
+        final String sql = "select * from item where size = ? order by id asc ";
+        return jdbcTemplate.query(sql, itemRowMapper, size);
     }
 }
-
 
 
 //запрос на получение послежней добавленной ID

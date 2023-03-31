@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+
+
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
@@ -48,13 +51,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> searchItemByBrand(String brand) {
-        return itemRepository.searchItemByBrand(brand);
+    public List<Item> searchItemsByBrand(String brand) {
+        return itemRepository.searchItemsByBrand(brand);
     }
 
     @Override
-    public List<Item> searchItemBySize(Double size) {
-        return itemRepository.searchItemBySize(size);
+    public List<Item> searchItemsBySize(Double size) {
+        return itemRepository.searchItemsBySize(size);
     }
 
 }

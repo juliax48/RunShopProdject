@@ -1,8 +1,11 @@
 package com.runshop.repository.implementItem;
 
+import com.runshop.aspect.LoggingAspect;
 import com.runshop.entity.Item;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +25,8 @@ import static com.runshop.repository.columns.ItemColumns.NAME;
 @Repository
 @PropertySource("classpath:database.properties")
 public class ItemRepositoryImpl implements ItemRepository {
+
+    private static final Logger log = Logger.getLogger(ItemRepositoryImpl.class);
 
     public JdbcTemplate jdbcTemplate;
 
@@ -175,7 +180,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<Item> searchItemByBrand(String brand) {
+    public List<Item> searchItemsByBrand(String brand) {
         List<Item> listBrand = new ArrayList<>();
         registerDriver();
 
@@ -198,7 +203,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<Item> searchItemBySize(Double size) {
+    public List<Item> searchItemsBySize(Double size) {
         List<Item> listSize = new ArrayList<>();
 
         registerDriver();
